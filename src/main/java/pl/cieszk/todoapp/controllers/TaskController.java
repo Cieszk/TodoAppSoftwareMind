@@ -9,6 +9,7 @@ import pl.cieszk.todoapp.services.TaskService;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/tasks")
 public class TaskController {
 
     private TaskService taskService;
@@ -44,14 +45,11 @@ public class TaskController {
         return ResponseEntity.ok(taskService.updateTask(task));
     }
 
-    @PutMapping("/set_as_done/{id}")
-    public ResponseEntity<Task> setTaskAsDone(@PathVariable Long id, @RequestBody Task toUpdate) {
+    @PutMapping("/set-as-done/{id}")
+    public ResponseEntity<Task> setTaskAsDone(@PathVariable Long id) {
         Task task = taskService.findTaskById(id);
-        toUpdate.setId(id);
-        toUpdate.setTitle(task.getTitle());
-        toUpdate.setDescription(task.getDescription());
-        toUpdate.setDone(true);
-        return ResponseEntity.ok(taskService.updateTask(toUpdate));
+        task.setDone(true);
+        return ResponseEntity.ok(taskService.updateTask(task));
     }
 
     @DeleteMapping("/{id}")
