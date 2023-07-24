@@ -3,6 +3,7 @@ package pl.cieszk.todoapp.model.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -15,6 +16,7 @@ public class Task {
 
     @Column(name = "TITLE")
     @Size(max = 30)
+    @NotBlank(message = "Task title must not be empty!")
     private String title;
 
     @Column(name = "DESCRIPTION")
