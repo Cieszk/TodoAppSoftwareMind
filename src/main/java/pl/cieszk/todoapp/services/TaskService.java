@@ -1,15 +1,18 @@
 package pl.cieszk.todoapp.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.cieszk.todoapp.model.entity.Task;
 import pl.cieszk.todoapp.repositories.TaskRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskService {
-    TaskRepository taskRepository;
+    private TaskRepository taskRepository;
+
     @Autowired
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
@@ -24,14 +27,16 @@ public class TaskService {
     }
 
     public Task findTaskById(Long id) {
-        return taskRepository.getById(id);
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
+        return task;
     }
 
     public List<Task> findAllCompletedTasks() {
         return taskRepository.findByDoneIsTrue();
     }
 
-    public List<Task> findAllUnfinishedTasks() {
+    public List<Task> findAllIncompleteTasks() {
         return taskRepository.findByDoneIsFalse();
     }
 
@@ -42,4 +47,5 @@ public class TaskService {
     public Task updateTask(Task task) {
         return taskRepository.save(task);
     }
+
 }

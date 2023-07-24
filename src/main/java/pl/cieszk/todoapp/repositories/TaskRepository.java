@@ -5,12 +5,16 @@ import org.springframework.stereotype.Repository;
 import pl.cieszk.todoapp.model.entity.Task;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    Task findByTitle(String title);
     List<Task> findByDoneIsTrue();
+
     List<Task> findByDoneIsFalse();
+
     List<Task> findAll();
-    Task getById(Long id);
+
+    Optional<Task> findById(Long id);
+
 }
