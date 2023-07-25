@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Task Detail</title>
+</head>
+<body>
+<h1>Task Detail</h1>
+<p>Title: <span th:text="${task.title}"></span></p>
+<p>Description: <span th:text="${task.description}"></span></p>
+<p>Status: <span th:text="${task.done ? 'Done' : 'Not Done'}"></span></p>
+<form th:action="@{/tasks/set-as-done/{id}(id=${task.id})}" method="post">
+    <button type="submit" th:if="${!task.done}">Set as Done</button>
+</form>
+<hr/>
+<a th:href="@{/tasks/{id}/edit(id=${task.id})}">
+    <button th:if="${!task.done}">Edit Task</button>
+</a>
+<hr/>
+<a th:href="@{/tasks/}">
+    <button>Back to Task List</button>
+</a>
+<hr/>
+</body>
+</html>

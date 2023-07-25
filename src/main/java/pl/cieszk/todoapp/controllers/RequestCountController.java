@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.cieszk.todoapp.utils.RequestCounterFilter;
 
 @RestController
-@RequestMapping("/api/utils")
+@RequestMapping("api/utils")
 public class RequestCountController {
     private final RequestCounterFilter requestCounterFilter;
 
