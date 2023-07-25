@@ -1,51 +1,90 @@
 package pl.cieszk.todoapp.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import pl.cieszk.todoapp.model.TaskDetailsDto;
+import pl.cieszk.todoapp.model.TaskDto;
 import pl.cieszk.todoapp.model.entity.Task;
 import pl.cieszk.todoapp.repositories.TaskRepository;
+import pl.cieszk.todoapp.utils.TaskMapper;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TaskService {
-    private TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
+
+    private final TaskMapper taskMapper;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, TaskMapper taskMapper) {
         this.taskRepository = taskRepository;
+        this.taskMapper = taskMapper;
     }
 
-    public Task createTask(Task task) {
-        return taskRepository.save(task);
+    public TaskDetailsDto createTask(TaskDetailsDto taskDetailsDto) {
+        Task task = taskMapper.toEntity(taskDetailsDto);
+        task = taskRepository.save(task);
+        return taskMapper.toDetailsDto(task);
     }
 
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    public List<TaskDto> getAllTasks() {
+        List<Task> task = taskRepository.findAll();
+        return task.stream()
+                .map(taskMapper::toDto)
+                .toList();
     }
 
-    public Task findTaskById(Long id) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
-        return task;
+    public TaskDetailsDto findTaskDetailsDtoById(Long id) {
+        Task task = taskRepository.findById(id).orElse(null);
+        return task != null ? taskMapper.toDetailsDto(task) : null;
     }
 
-    public List<Task> findAllCompletedTasks() {
-        return taskRepository.findByDoneIsTrue();
+    public TaskDto findTaskById(Long id) {
+        Task task = taskRepository.findById(id).orElse(null);
+        return task != null ? taskMapper.toDto(task) : null;
     }
 
-    public List<Task> findAllIncompleteTasks() {
-        return taskRepository.findByDoneIsFalse();
+    public List<TaskDto> findAllCompletedTasks() {
+        List<Task> tasks = taskRepository.findByDoneIsTrue();
+        return tasks.stream()
+                .map(taskMapper::toDto)
+                .toList();
     }
 
-    public void deleteTask(Task task) {
-        taskRepository.delete(task);
+    public List<TaskDto> findAllIncompleteTasks() {
+        List<Task> tasks = taskRepository.findByDoneIsFalse();
+        return tasks.stream()
+                .map(taskMapper::toDto)
+                .toList();
     }
 
-    public Task updateTask(Task task) {
-        return taskRepository.save(task);
+    public boolean deleteTask(Long id) {
+        Task toDelete = taskRepository.findById(id).orElse(null);
+        if (toDelete != null) {
+            taskRepository.delete(toDelete);
+            return true;
+        }
+        return false;
     }
 
+    public TaskDetailsDto updateTask(Long id, TaskDetailsDto taskDetailsDto) {
+        Task taskToUpdate = taskRepository.findById(id).orElse(null);
+        if (taskToUpdate == null) {
+            return null;
+        }
+        taskMapper.updateFromDto(taskDetailsDto, taskToUpdate);
+        taskToUpdate = taskRepository.save(taskToUpdate);
+        return taskMapper.toDetailsDto(taskToUpdate);
+    }
+
+    public TaskDetailsDto setTaskDone(Long id, boolean done) {
+        Task taskToUpdate = taskRepository.findById(id).orElse(null);
+        if (taskToUpdate != null) {
+            taskToUpdate.setDone(done);
+            taskToUpdate = taskRepository.save(taskToUpdate);
+            return taskMapper.toDetailsDto(taskToUpdate);
+        }
+        return null;
+    }
 }

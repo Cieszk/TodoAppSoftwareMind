@@ -3,7 +3,8 @@ package pl.cieszk.todoapp.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.cieszk.todoapp.model.entity.Task;
+import pl.cieszk.todoapp.model.TaskDetailsDto;
+import pl.cieszk.todoapp.model.TaskDto;
 import pl.cieszk.todoapp.services.TaskService;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 @RequestMapping("/api/tasks")
 public class TaskController {
 
-    private TaskService taskService;
+    private final TaskService taskService;
 
     @Autowired
     public TaskController(TaskService taskService) {
@@ -20,43 +21,57 @@ public class TaskController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Task>> getAllTasks() {
+    public ResponseEntity<List<TaskDto>> getAllTasks() {
         return ResponseEntity.ok(taskService.getAllTasks());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskDetailsDto> getTaskById(@PathVariable Long id) {
+        TaskDetailsDto taskDetailsDto = taskService.findTaskDetailsDtoById(id);
+        if (taskDetailsDto == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(taskDetailsDto);
+    }
+
     @GetMapping("/completed")
-    public ResponseEntity<List<Task>> getAllCompletedTasks() {
-        return ResponseEntity.ok(taskService.findAllCompletedTasks());
+    public ResponseEntity<List<TaskDto>> getAllCompletedTasks() {
+        List<TaskDto> tasks = taskService.findAllCompletedTasks();
+        return ResponseEntity.ok(tasks);
     }
 
     @GetMapping("/incomplete")
-    public ResponseEntity<List<Task>> getAllIncompleteTasks() {
-        return ResponseEntity.ok(taskService.findAllIncompleteTasks());
+    public ResponseEntity<List<TaskDto>> getAllIncompleteTasks() {
+        List<TaskDto> tasks = taskService.findAllIncompleteTasks();
+        return ResponseEntity.ok(tasks);
     }
 
     @PostMapping("/")
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+    public ResponseEntity<TaskDetailsDto> createTask(@RequestBody TaskDetailsDto task) {
         return ResponseEntity.ok(taskService.createTask(task));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task) {
-        task.setId(id);
-        return ResponseEntity.ok(taskService.updateTask(task));
+    public ResponseEntity<TaskDetailsDto> updateTask(@PathVariable Long id, @RequestBody TaskDetailsDto task) {
+        TaskDetailsDto toUpdate = taskService.updateTask(id, task);
+        if (toUpdate == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(toUpdate);
     }
 
     @PutMapping("/set-as-done/{id}")
-    public ResponseEntity<Task> setTaskAsDone(@PathVariable Long id) {
-        Task task = taskService.findTaskById(id);
-        task.setDone(true);
-        return ResponseEntity.ok(taskService.updateTask(task));
+    public ResponseEntity<TaskDetailsDto> setTaskAsDone(@PathVariable Long id) {
+        TaskDetailsDto task = taskService.setTaskDone(id, true);
+        if (task == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(task);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteTask(@PathVariable Long id) {
-        Task toDelete = taskService.findTaskById(id);
-        taskService.deleteTask(toDelete);
-        return ResponseEntity.ok(true);
+        return ResponseEntity.ok(taskService.deleteTask(id));
     }
 
 }
