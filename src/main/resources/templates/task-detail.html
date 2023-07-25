@@ -16,6 +16,10 @@
     <button th:if="${!task.done}">Edit Task</button>
 </a>
 <hr/>
+<form th:action="@{/tasks/{id}/remove(id=${task.id})}" method="post">
+    <button type="submit">Remove Task</button>
+</form>
+<p/>
 <a th:href="@{/tasks/}">
     <button>Back to Task List</button>
 </a>

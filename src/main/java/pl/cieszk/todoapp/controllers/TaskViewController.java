@@ -65,4 +65,10 @@ public class TaskViewController {
         TaskDetailsDto task = taskService.setTaskDone(id, true);
         return "redirect:/tasks/";
     }
+
+    @PostMapping("/{id}/remove")
+    public String removeTask(@PathVariable Long id) {
+        taskService.deleteTask(id);
+        return "redirect:/tasks/";
+    }
 }
