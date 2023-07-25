@@ -1,5 +1,6 @@
 package pl.cieszk.todoapp.controllers.api;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -7,7 +8,6 @@ import pl.cieszk.todoapp.model.TaskDetailsDto;
 import pl.cieszk.todoapp.model.TaskDto;
 import pl.cieszk.todoapp.services.TaskService;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController

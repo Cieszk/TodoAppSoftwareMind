@@ -1,16 +1,15 @@
 package pl.cieszk.todoapp.services;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import pl.cieszk.todoapp.model.TaskDetailsDto;
 import pl.cieszk.todoapp.model.TaskDto;
 import pl.cieszk.todoapp.model.entity.Task;
 import pl.cieszk.todoapp.repositories.TaskRepository;
 import pl.cieszk.todoapp.utils.TaskMapper;
 
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.Valid;
 import java.util.List;
 
 @Service

@@ -11,19 +11,15 @@ public class TaskTest {
     public void testTaskGetterAndSetter() {
         Task task = new Task();
 
-        // Test ID
         task.setId(1L);
         assertThat(task.getId()).isEqualTo(1L);
 
-        // Test Title
         task.setTitle("Test Title");
         assertThat(task.getTitle()).isEqualTo("Test Title");
 
-        // Test Description
         task.setDescription("Test Description");
         assertThat(task.getDescription()).isEqualTo("Test Description");
 
-        // Test Done Status
         task.setDone(true);
         assertThat(task.isDone()).isEqualTo(true);
     }

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,9 +22,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TaskControllerTest {
@@ -63,6 +60,7 @@ public class TaskControllerTest {
                 .andExpect(jsonPath("$[0].id", is(task.getId().intValue())))
                 .andExpect(jsonPath("$[0].title", is(task.getTitle())));
     }
+
     @Test
     public void testGetTaskById() throws Exception {
         Long id = 1L;
@@ -162,4 +160,3 @@ public class TaskControllerTest {
                 .andExpect(jsonPath("$.done", is(task.isDone())));
     }
 }
-// Add similar tests for all other methods like getAllCompletedTasks, getAllIncompleteTasks, createTask, updateTask, setTaskAsDone, deleteTask, etc.

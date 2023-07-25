@@ -1,9 +1,9 @@
 package pl.cieszk.todoapp.model;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor

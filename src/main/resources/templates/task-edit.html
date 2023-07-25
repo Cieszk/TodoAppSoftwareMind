@@ -2,21 +2,30 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Edit Task</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}"/>
 </head>
 <body>
-<h1>Edit Task</h1>
-<form th:action="@{/tasks/update/{id}(id=${task.id})}" method="post" th:object="${task}">
-    <label for="title">Title:</label>
-    <input type="text" id="title" name="title" th:value="${task.title}" required><br>
+<div class="container">
+    <h1 class="title">Edit Task</h1>
+    <form th:action="@{/tasks/update/{id}(id=${task.id})}" method="post" th:object="${task}" class="task-form">
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" th:value="${task.title}" required>
+        </div>
 
-    <label for="description">Description:</label>
-    <input type="text" id="description" name="description" th:value="${task.description}"><br>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="description" th:value="${task.description}">
+        </div>
+        <hr/>
+        <button type="submit" class="btn btn-primary">Update Task</button>
+    </form>
     <hr/>
-    <button type="submit">Update Task</button>
-</form>
-<hr/>
-<a th:href="@{/tasks/}">
-    <button>Back to Task List</button>
-</a>
+    <div class="task-actions">
+        <a th:href="@{/tasks/}">
+            <button class="btn btn-primary">Back to Task List</button>
+        </a>
+    </div>
+</div>
 </body>
 </html>

@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ErrorResponse handleEntityNotFoundException(EntityNotFoundException ex) {
         return new ErrorResponse(ex.getMessage());
-        }
+    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -23,6 +23,7 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleIllegalArgumentException(IllegalArgumentException ex) {
         return new ErrorResponse(ex.getMessage());
     }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody

@@ -2,27 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Task Detail</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}"/>
 </head>
 <body>
-<h1>Task Detail</h1>
-<p>Title: <span th:text="${task.title}"></span></p>
-<p>Description: <span th:text="${task.description}"></span></p>
-<p>Status: <span th:text="${task.done ? 'Done' : 'Not Done'}"></span></p>
-<form th:action="@{/tasks/set-as-done/{id}(id=${task.id})}" method="post">
-    <button type="submit" th:if="${!task.done}">Set as Done</button>
-</form>
-<hr/>
-<a th:href="@{/tasks/{id}/edit(id=${task.id})}">
-    <button th:if="${!task.done}">Edit Task</button>
-</a>
-<hr/>
-<form th:action="@{/tasks/{id}/remove(id=${task.id})}" method="post">
-    <button type="submit">Remove Task</button>
-</form>
-<p/>
-<a th:href="@{/tasks/}">
-    <button>Back to Task List</button>
-</a>
-<hr/>
+<div class="container">
+    <h1 class="title">Task Detail</h1>
+    <div class="task-detail">
+        <p class="task-field">Title: <span th:text="${task.title}"></span></p>
+        <p class="task-field">Description: <span th:text="${task.description}"></span></p>
+        <p class="task-field">Status: <span th:text="${task.done ? 'Done' : 'Not Done'}"></span></p>
+    </div>
+    <form th:action="@{/tasks/set-as-done/{id}(id=${task.id})}" method="post">
+        <button type="submit" th:if="${!task.done}" class="btn btn-primary">Set as Done</button>
+    </form>
+    <hr/>
+    <div class="task-actions">
+        <a th:href="@{/tasks/{id}/edit(id=${task.id})}">
+            <button th:if="${!task.done}" class="btn btn-edit btn-primary">Edit Task</button>
+        </a>
+        <form th:action="@{/tasks/{id}/remove(id=${task.id})}" method="post">
+            <button type="submit" class="btn btn-remove btn-danger">Remove Task</button>
+        </form>
+    </div>
+    <a th:href="@{/tasks/}">
+        <button class="btn btn-back btn-primary">Back to Task List</button>
+    </a>
+    <hr/>
+</div>
 </body>
 </html>
