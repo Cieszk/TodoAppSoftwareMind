@@ -47,11 +47,6 @@ public class TaskService {
         return task != null ? taskMapper.toDetailsDto(task) : null;
     }
 
-    public TaskDto findTaskById(Long id) {
-        Task task = taskRepository.findById(id).orElse(null);
-        return task != null ? taskMapper.toDto(task) : null;
-    }
-
     public List<TaskDto> findAllCompletedTasks() {
         List<Task> tasks = taskRepository.findByDoneIsTrue();
         return tasks.stream()
@@ -97,4 +92,6 @@ public class TaskService {
         }
         return null;
     }
+
+
 }
