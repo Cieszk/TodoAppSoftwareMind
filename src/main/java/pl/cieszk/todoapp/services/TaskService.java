@@ -8,9 +8,13 @@ import pl.cieszk.todoapp.model.entity.Task;
 import pl.cieszk.todoapp.repositories.TaskRepository;
 import pl.cieszk.todoapp.utils.TaskMapper;
 
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
+@Validated
 public class TaskService {
     private final TaskRepository taskRepository;
 
@@ -22,7 +26,10 @@ public class TaskService {
         this.taskMapper = taskMapper;
     }
 
-    public TaskDetailsDto createTask(TaskDetailsDto taskDetailsDto) {
+    public TaskDetailsDto createTask(@Valid TaskDetailsDto taskDetailsDto) {
+        if (taskDetailsDto.getTitle() == null || taskDetailsDto.getTitle().trim().isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be empty");
+        }
         Task task = taskMapper.toEntity(taskDetailsDto);
         task = taskRepository.save(task);
         return taskMapper.toDetailsDto(task);
@@ -68,7 +75,10 @@ public class TaskService {
         return false;
     }
 
-    public TaskDetailsDto updateTask(Long id, TaskDetailsDto taskDetailsDto) {
+    public TaskDetailsDto updateTask(Long id, @Valid TaskDetailsDto taskDetailsDto) {
+        if (taskDetailsDto.getTitle() == null || taskDetailsDto.getTitle().trim().isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be empty");
+        }
         Task taskToUpdate = taskRepository.findById(id).orElse(null);
         if (taskToUpdate == null) {
             return null;

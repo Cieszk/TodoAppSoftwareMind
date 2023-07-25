@@ -24,5 +24,5 @@ public class Task {
     private String description;
 
     @Column(name = "DONE")
-    private boolean done;
+    private boolean done = false;
 }

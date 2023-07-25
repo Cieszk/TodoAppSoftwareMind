@@ -7,6 +7,7 @@ import pl.cieszk.todoapp.model.TaskDetailsDto;
 import pl.cieszk.todoapp.model.TaskDto;
 import pl.cieszk.todoapp.services.TaskService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -47,12 +48,12 @@ public class TaskController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<TaskDetailsDto> createTask(@RequestBody TaskDetailsDto task) {
+    public ResponseEntity<TaskDetailsDto> createTask(@RequestBody @Valid TaskDetailsDto task) {
         return ResponseEntity.ok(taskService.createTask(task));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskDetailsDto> updateTask(@PathVariable Long id, @RequestBody TaskDetailsDto task) {
+    public ResponseEntity<TaskDetailsDto> updateTask(@PathVariable Long id, @RequestBody @Valid TaskDetailsDto task) {
         TaskDetailsDto toUpdate = taskService.updateTask(id, task);
         if (toUpdate == null) {
             return ResponseEntity.notFound().build();
